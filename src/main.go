@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"os"
-	"score/src/handler/routes"
+	"score/src/handler"
+	"score/src/internal/global"
 )
 
 func main() {
@@ -14,9 +14,15 @@ func main() {
 		fmt.Println("Error loading .env file", err)
 		os.Exit(-1)
 	}
-	router := gin.Default()
-	gin.SetMode(gin.ReleaseMode)
-	router.GET("/tournaments", routes.GetTournaments)
+
+	//Acquiring DB connection
+	if err := global.SetDBToGlobal(); err != nil {
+		fmt.Println("Error setting db to global", err)
+		os.Exit(-1)
+	}
+
+	//Using GIN package initiating routes
+	router := handler.SetUpRouter()
 	fmt.Println("Starting server on port", os.Getenv("PORT"))
 	router.Run(":" + os.Getenv("PORT"))
 }
