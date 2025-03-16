@@ -5,7 +5,20 @@ import (
 	"net/http"
 )
 
-func GetTournaments(c *gin.Context) {
+type Tournament struct {
+	Name       string `json:"name"`
+	Format     string `json:"format"`
+	LeagueName string `json:"league"`
+}
+
+func GetTournamentRoutes() *TournamentRoutes {
+	return &TournamentRoutes{}
+}
+
+type TournamentRoutes struct{}
+
+func (*TournamentRoutes) GetTournaments(c *gin.Context) {
+
 	tournaments := []Tournament{
 		{
 			Name:       "IPL",
@@ -19,10 +32,4 @@ func GetTournaments(c *gin.Context) {
 		},
 	}
 	c.IndentedJSON(http.StatusOK, tournaments)
-}
-
-type Tournament struct {
-	Name       string `json:"name"`
-	Format     string `json:"format"`
-	LeagueName string `json:"league"`
 }
