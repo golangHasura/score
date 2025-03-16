@@ -11,7 +11,13 @@ type Tournament struct {
 	LeagueName string `json:"league"`
 }
 
-func GetTournaments(c *gin.Context) {
+func GetTournamentRoutes() *TournamentRoutes {
+	return &TournamentRoutes{}
+}
+
+type TournamentRoutes struct{}
+
+func (*TournamentRoutes) GetTournaments(c *gin.Context) {
 
 	tournaments := []Tournament{
 		{

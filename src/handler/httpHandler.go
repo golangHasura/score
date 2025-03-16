@@ -7,16 +7,19 @@ import (
 
 func getHttpHandler() *Handler {
 	return &Handler{
-		FormatRoutes: routes.GetFormatRoutes(),
+		FormatRoutes:     routes.GetFormatRoutes(),
+		TournamentRoutes: routes.GetTournamentRoutes(),
 	}
 }
 
 type Handler struct {
-	FormatRoutes *routes.FormatRoutes
+	FormatRoutes     *routes.FormatRoutes
+	TournamentRoutes *routes.TournamentRoutes
 }
 
 func GetTournamentRoutes(c *gin.Engine) {
-	c.GET("/tournaments", routes.GetTournaments)
+	handler := getHttpHandler()
+	c.GET("/tournaments", handler.TournamentRoutes.GetTournaments)
 }
 
 func GetFormatRoutes(c *gin.Engine) {
