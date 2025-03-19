@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"score/src/internal/dto"
 	"score/src/internal/global"
 	h "score/src/internal/helper"
 	"score/src/repo"
@@ -23,13 +24,23 @@ func (f *FormatRoutes) GetFormats(c *gin.Context) {
 	// Getting DB from global
 	db := global.GetDbFromGlobal()
 
-	formats, err := f.FormatRepo.FetchFormats(db)
+	fetchedFormats, err := f.FormatRepo.FetchFormats(db)
 	if err != nil {
 		errRes := map[string]string{
-			"code":    h.CommenErrorCode,
+			"code":    h.CommonErrorCode,
 			"message": err.Error(),
 		}
 		c.IndentedJSON(http.StatusBadRequest, errRes)
+		return
 	}
-	c.IndentedJSON(http.StatusOK, formats)
+	var formats []dto.Format
+	for _, fetchedFormat := range fetchedFormats {
+		format := dto.Format{
+			EntityId: fetchedFormat.EntityId,
+			Name:     fetchedFormat.Name,
+		}
+		formats = append(formats, format)
+	}
+	res := dto.RetrieveAllResponse{Total: len(formats), Data: formats}
+	c.IndentedJSON(http.StatusOK, res)
 }

@@ -14,7 +14,7 @@ type DB struct {
 func ConnectSql(dbString string) (dbConn *DB, err error) {
 	dbConn = &DB{}
 	database, err := gorm.Open(mysql.Open(dbString), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Silent),
+		Logger: logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
 		return dbConn, err

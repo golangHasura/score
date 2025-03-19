@@ -2,5 +2,5 @@ package helper
 
 // Error codes
 const (
-	CommenErrorCode = "SC01"
+	CommonErrorCode = "SC01"
 )
