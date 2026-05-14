@@ -22,6 +22,14 @@ type TeamRoutes struct {
 
 func (t *TeamRoutes) GetTeam(c *gin.Context) {
 	db := g.GetDbFromGlobal()
+	if db == nil || db.DBOp == nil {
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{
+			"code":    h.CommonErrorCode,
+			"message": "database connection is not initialized",
+		})
+		return
+	}
+
 	fetchedTeams, err := t.repo.FetchTeams(db)
 	if err != nil {
 		errRes := map[string]string{

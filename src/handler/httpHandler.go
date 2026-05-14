@@ -36,8 +36,8 @@ func GetTeamRoutes(c *gin.Engine) {
 }
 
 func SetUpRouter() *gin.Engine {
-	r := gin.Default()
 	gin.SetMode(gin.ReleaseMode)
+	r := gin.Default()
 	r.Use(middleware.InsertTables())
 	GetFormatRoutes(r)
 	GetTournamentRoutes(r)

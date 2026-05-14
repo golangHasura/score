@@ -3,26 +3,29 @@ package main
 import (
 	"fmt"
 	"github.com/joho/godotenv"
+	"log"
 	"os"
 	"score/src/handler"
 	"score/src/internal/global"
 )
 
 func main() {
-	//TODO: Add GOPATH
-	if err := godotenv.Load("/Users/yogendravutukuri/GolandProjects/go/src/score/src/.env"); err != nil {
-		fmt.Println("Error loading .env file", err)
-		os.Exit(-1)
+	if err := godotenv.Load(); err != nil {
+		fmt.Println("No .env file found, using environment variables")
 	}
 
-	//Acquiring DB connection
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
 	if err := global.SetDBToGlobal(); err != nil {
-		fmt.Println("Error setting db to global", err)
-		os.Exit(-1)
+		log.Fatal("Error setting db to global: ", err)
 	}
 
-	//Using GIN package initiating routes
 	router := handler.SetUpRouter()
-	fmt.Println("Starting server on port", os.Getenv("PORT"))
-	router.Run(":" + os.Getenv("PORT"))
+	fmt.Println("Starting server on port", port)
+	if err := router.Run(":" + port); err != nil {
+		log.Fatal("Error starting server: ", err)
+	}
 }

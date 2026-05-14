@@ -1,6 +1,7 @@
 package database
 
 import (
+	"errors"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -12,6 +13,10 @@ type DB struct {
 
 // ConnectSql connects to the db and save the value in Pointer struct
 func ConnectSql(dbString string) (dbConn *DB, err error) {
+	if dbString == "" {
+		return nil, errors.New("DB_CONNECTION is required")
+	}
+
 	dbConn = &DB{}
 	database, err := gorm.Open(mysql.Open(dbString), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Silent),
