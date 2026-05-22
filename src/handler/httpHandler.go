@@ -19,6 +19,7 @@ type Handler struct {
 	FormatRoutes     *routes.FormatRoutes
 	TournamentRoutes *routes.TournamentRoutes
 	TeamRoutes       *routes.TeamRoutes
+	code             int
 }
 
 func GetTournamentRoutes(c *gin.Engine) {
