@@ -1,9 +1,10 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
 	"score/src/handler/middleware"
 	"score/src/handler/routes"
+
+	"github.com/gin-gonic/gin"
 )
 
 func getHttpHandler() *Handler {
