@@ -1,9 +1,10 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
 	"score/src/handler/middleware"
 	"score/src/handler/routes"
+
+	"github.com/gin-gonic/gin"
 )
 
 func getHttpHandler() *Handler {
@@ -36,8 +37,8 @@ func GetTeamRoutes(c *gin.Engine) {
 }
 
 func SetUpRouter() *gin.Engine {
-	r := gin.Default()
 	gin.SetMode(gin.ReleaseMode)
+	r := gin.Default()
 	r.Use(middleware.InsertTables())
 	GetFormatRoutes(r)
 	GetTournamentRoutes(r)

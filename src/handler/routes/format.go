@@ -23,6 +23,13 @@ type FormatRoutes struct {
 func (f *FormatRoutes) GetFormats(c *gin.Context) {
 	// Getting DB from global
 	db := global.GetDbFromGlobal()
+	if db == nil || db.DBOp == nil {
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{
+			"code":    h.CommonErrorCode,
+			"message": "database connection is not initialized",
+		})
+		return
+	}
 
 	fetchedFormats, err := f.FormatRepo.FetchFormats(db)
 	if err != nil {
